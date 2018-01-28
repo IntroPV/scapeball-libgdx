@@ -14,6 +14,7 @@ import adictive.games.SquareWorld;
 import adictive.games.components.BoundsComponent;
 import adictive.games.components.TransformComponent;
 import adictive.games.play.PlayScreen;
+import adictive.games.utils.GameData;
 
 public class DebugSystem extends EntitySystem implements Reseteable {
 
@@ -41,11 +42,13 @@ public class DebugSystem extends EntitySystem implements Reseteable {
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
-            screen.superCubito.goToPrevLevel();
+            GameData.decrementCurrentLevel();
+            screen.state = PlayScreen.DEBUG_CHANGE_LEVEL;
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
-            screen.superCubito.goToNextLevel();
+            GameData.incrementCurrentLevel();
+            screen.state = PlayScreen.DEBUG_CHANGE_LEVEL;
         }
 
         shapeRenderer.setProjectionMatrix(world.getCamera().combined);

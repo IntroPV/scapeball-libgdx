@@ -33,9 +33,10 @@ public class PlayScreen extends ScreenAdapter implements Reseteable {
     private LevelLoader levelLoader;
     public int state = RUNNING;
 
-    private static final int RUNNING = 1;
-    private static final int KILLED = 2;
-    private static final int WIN = 3;
+    public static final int RUNNING = 1;
+    public static final int KILLED = 2;
+    public static final int WIN = 3;
+    public static final int DEBUG_CHANGE_LEVEL = 4;
 
     public PlayScreen(SquareGame superCubito) {
         this.superCubito = superCubito;
@@ -138,6 +139,10 @@ public class PlayScreen extends ScreenAdapter implements Reseteable {
                 superCubito.analyticsManager.winLevel(level);
                 reset();
                 break;
+            case DEBUG_CHANGE_LEVEL:
+                reset();
+                break;
+                
         }
     }
 

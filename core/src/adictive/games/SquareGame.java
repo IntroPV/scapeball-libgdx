@@ -32,14 +32,4 @@ public class SquareGame extends Game {
         logger.log();
         super.render();
     }
-
-    public void goToNextLevel() {
-        GameData.incrementCurrentLevel();
-        ((Reseteable)getScreen()).reset();
-    }
-
-    public void goToPrevLevel() {
-        GameData.decrementCurrentLevel();
-        ((Reseteable)getScreen()).reset();
-    }
 }

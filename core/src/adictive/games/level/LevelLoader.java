@@ -1,6 +1,7 @@
 package adictive.games.level;
 
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
@@ -107,10 +108,10 @@ public class LevelLoader {
     }
 
     private void parseBlock(String[] line) {
-        loadBlock(world, engine, Integer.parseInt(line[1]), Integer.parseInt(line[2]));
+        loadBlock(world, engine, Integer.parseInt(line[1]), Integer.parseInt(line[2]), line.length >=4 ? Integer.parseInt(line[3]) : 0);
     }
 
-    private static void loadBlock(SquareWorld world, Engine engine, int x, int y) {
-        WallComponent.addNew(engine, x, y);
+    private static void loadBlock(SquareWorld world, Engine engine, int x, int y, int flags) {
+        WallComponent.addNewWall(engine, x, y, flags);
     }
 }

@@ -9,21 +9,30 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class WallComponent implements Component {
 
-    public static final TextureRegion textureRegion = new TextureRegion(new Texture(Gdx.files.internal("data/blackBox.png")));
+    private static final TextureRegion blackTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("data/blackBox.png")));
+    private static final TextureRegion chainTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("data/chainBox.png")));
 
-    public static Entity addNew(Engine engine, int x, int y) {
-        Entity block = create(x, y);
+    public static final int FLAG_CHAINBOX = 0x1;
+
+    public static Entity addNewWall(Engine engine, int x, int y, int flag) {
+        Entity block = create(x, y, flag);
 
         engine.addEntity(block);
         return block;
     }
 
-    public static Entity create(int x, int y) {
+    public static Entity create(int x, int y, int flag) {
         Entity block = new Entity();
+        block.flags = flag;
 
-        TextureComponent textureComponent = new TextureComponent();
+        final TextureComponent textureComponent = new TextureComponent();
 
-        textureComponent.region = textureRegion;
+        if ((flag & FLAG_CHAINBOX) == FLAG_CHAINBOX) {
+            textureComponent.region = chainTextureRegion;
+        } else {
+            textureComponent.region = blackTextureRegion;
+        }
+
         block.add(textureComponent);
 
         TransformComponent transformComponent = new TransformComponent();

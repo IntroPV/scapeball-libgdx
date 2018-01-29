@@ -28,6 +28,8 @@ import adictive.games.level.LevelWriter;
 import adictive.games.play.PlayScreen;
 import adictive.games.utils.GameData;
 
+import static adictive.games.components.WallComponent.FLAG_CHAINBOX;
+
 public class DesignerSystem extends EntitySystem implements Reseteable {
     private static final Vector3 UP    = new Vector3( 0f,  1f, 0f);
     private static final Vector3 DOWN  = new Vector3( 0f, -1f, 0f);
@@ -60,7 +62,8 @@ public class DesignerSystem extends EntitySystem implements Reseteable {
         this.screen = screen;
 
         this.brushes = new Brush[]{
-                new WallBrush(0,0),
+                new WallBrush(0,0, 0),
+                new WallBrush(0,0, FLAG_CHAINBOX),
                 new WinBrush(0,0),
                 new EnemyBrush(0,0),
                 new CoinBrush(0,0),
@@ -358,8 +361,11 @@ public class DesignerSystem extends EntitySystem implements Reseteable {
 
     class WallBrush extends Brush {
 
-        WallBrush(int x, int y) {
-            super(WallComponent.create(x,y));
+        private int flag;
+
+        WallBrush(int x, int y, int flag) {
+            super(WallComponent.create(x,y, flag));
+            this.flag = flag;
         }
 
         @Override
@@ -369,7 +375,7 @@ public class DesignerSystem extends EntitySystem implements Reseteable {
 
             if (getEngine().getSystem(CollisionSystem.class).entityMap[x][y][CollisionSystem.WALL] != null) return;
 
-            WallComponent.addNew(getEngine(), x, y);
+            WallComponent.addNewWall(getEngine(), x, y, flag);
         }
     }
 

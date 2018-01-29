@@ -83,7 +83,7 @@ public class LevelWriter {
 
     public String blockToCSV(Entity e) {
         TransformComponent tc = e.getComponent(TransformComponent.class);
-        return csv("Block", (int)tc.pos.x, (int)tc.pos.y);
+        return csv("Block", (int)tc.pos.x, (int)tc.pos.y, e.flags);
     }
 
     public String holeToCSV(Entity e) {

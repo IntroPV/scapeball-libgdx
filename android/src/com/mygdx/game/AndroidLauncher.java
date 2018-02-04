@@ -6,7 +6,7 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.mygdx.game.analytics.FirebaseAnalyticsManager;
 
-import adictive.games.SquareGame;
+import adictive.games.MainGame;
 
 public class AndroidLauncher extends AndroidApplication {
 
@@ -14,6 +14,6 @@ public class AndroidLauncher extends AndroidApplication {
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new SquareGame(new FirebaseAnalyticsManager(this)), config);
-	}
+        initialize(new MainGame(new FirebaseAnalyticsManager(this)), config);
+    }
 }

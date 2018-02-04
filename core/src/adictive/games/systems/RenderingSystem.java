@@ -13,8 +13,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.Comparator;
 
 import adictive.games.SquareWorld;
-import adictive.games.components.EnemyComponent;
-import adictive.games.components.PlayerComponent;
 import adictive.games.components.TextureComponent;
 import adictive.games.components.TransformComponent;
 import adictive.games.utils.SortedOnInsertList;
@@ -24,7 +22,6 @@ public class RenderingSystem extends EntitySystem implements Reseteable {
     public static final int VIEWPORT_WIDTH_MTS = 15;
     public static final int VIEWPORT_HEIGHT_MTS = 15;
     public static final Family FAMILY = Family.all(TextureComponent.class, TransformComponent.class).get();
-    public static final Family MOVING_THINGS = Family.one(PlayerComponent.class, EnemyComponent.class).get();
 
     private final SortedOnInsertList<Entity> renderQueue;
 

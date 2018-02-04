@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import adictive.games.SquareWorld;
 import adictive.games.components.BoundsComponent;
 import adictive.games.components.TransformComponent;
-import adictive.games.play.PlayScreen;
+import adictive.games.screens.PlayScreen;
 import adictive.games.utils.GameData;
 
 public class DebugSystem extends EntitySystem implements Reseteable {

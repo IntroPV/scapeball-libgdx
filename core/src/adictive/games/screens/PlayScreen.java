@@ -1,4 +1,4 @@
-package adictive.games.play;
+package adictive.games.screens;
 
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
@@ -8,7 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 
-import adictive.games.SquareGame;
+import adictive.games.MainGame;
 import adictive.games.SquareWorld;
 import adictive.games.components.CoinComponent;
 import adictive.games.level.LevelLoader;
@@ -29,7 +29,7 @@ public class PlayScreen extends ScreenAdapter implements Reseteable {
     private static final Family COINS_FAMILY = Family.all(CoinComponent.class).get();
     private final PooledEngine engine = new PooledEngine();
     private final SquareWorld world = new SquareWorld();
-    public final SquareGame superCubito;
+    public final MainGame superCubito;
     private LevelLoader levelLoader;
     public int state = RUNNING;
 
@@ -38,7 +38,7 @@ public class PlayScreen extends ScreenAdapter implements Reseteable {
     public static final int WIN = 3;
     public static final int DEBUG_CHANGE_LEVEL = 4;
 
-    public PlayScreen(SquareGame superCubito) {
+    public PlayScreen(MainGame superCubito) {
         this.superCubito = superCubito;
         this.levelLoader = new LevelLoader(world, engine);
         generateSystems();

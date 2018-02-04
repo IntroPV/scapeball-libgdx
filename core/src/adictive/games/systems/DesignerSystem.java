@@ -25,7 +25,7 @@ import adictive.games.components.TransformComponent;
 import adictive.games.components.WallComponent;
 import adictive.games.components.WinComponent;
 import adictive.games.level.LevelWriter;
-import adictive.games.play.PlayScreen;
+import adictive.games.screens.PlayScreen;
 import adictive.games.utils.GameData;
 
 import static adictive.games.components.WallComponent.FLAG_CHAINBOX;

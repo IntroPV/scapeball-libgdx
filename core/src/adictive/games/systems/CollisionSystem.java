@@ -20,7 +20,7 @@ import adictive.games.components.SpikeComponent;
 import adictive.games.components.TransformComponent;
 import adictive.games.components.WallComponent;
 import adictive.games.components.WinComponent;
-import adictive.games.play.PlayScreen;
+import adictive.games.screens.PlayScreen;
 
 public class CollisionSystem extends EntitySystem implements Reseteable {
 

@@ -16,7 +16,17 @@ public class PlayerComponent implements Component {
     public static final float WIDTH = 0.5f;
     public static final float HEIGHT = 0.5f;
     public static final float LAYER = 3;
-    private static final TextureRegion textureRegion = new TextureRegion(new Texture(Gdx.files.internal("data/player.png")));
+    public static final Texture playerTexture = new Texture(Gdx.files.internal("data/player_sheet.png"));
+
+    private static final TextureRegion textureRegion = new TextureRegion(playerTexture, 0, 0, 24, 24);
+
+    public static final TextureRegion trail1 = new TextureRegion(playerTexture, 24, 0, 24, 24);
+    public static final TextureRegion trail2 = new TextureRegion(playerTexture, 24 * 2, 0, 24, 24);
+    public static final TextureRegion trail3 = new TextureRegion(playerTexture, 24 * 3, 0, 24, 24);
+    public static final TextureRegion trail4 = new TextureRegion(playerTexture, 24 * 4, 0, 24, 24);
+
+    public final float[] trailX = new float[5];
+    public final float[] trailY = new float[5];
 
     public static void addNew(SquareWorld world, Engine engine, float x, float y) {
         Entity player = create(world, x, y);

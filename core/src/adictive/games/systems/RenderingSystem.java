@@ -122,11 +122,11 @@ public class RenderingSystem extends EntitySystem implements Reseteable {
         if (width < height) {
             cam.viewportWidth = VIEWPORT_WIDTH_MTS;
             cam.viewportHeight = VIEWPORT_HEIGHT_MTS * ((height) / width);
-            cam.zoom = 300f / height;
+            cam.zoom = 200f / height;
         } else {
             cam.viewportWidth = VIEWPORT_WIDTH_MTS * ((width) / height);
             cam.viewportHeight = VIEWPORT_HEIGHT_MTS;
-            cam.zoom = 500f / width;
+            cam.zoom = 400f / width;
         }
     }
 

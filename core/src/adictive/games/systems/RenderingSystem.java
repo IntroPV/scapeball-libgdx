@@ -39,7 +39,7 @@ public class RenderingSystem extends EntitySystem implements Reseteable {
 
         renderQueue = new SortedOnInsertList<>(512,
                 (entityA, entityB) ->
-                        (int) Math.signum(transformMapper.get(entityB).pos.z - transformMapper.get(entityA).pos.z));
+                        (int) Math.signum(transformMapper.get(entityA).pos.z - transformMapper.get(entityB).pos.z));
     }
 
     @Override

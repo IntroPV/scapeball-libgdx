@@ -7,6 +7,8 @@ import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.utils.Array;
 
+import adictive.games.SquareWorld;
+import adictive.games.TiledMap;
 import adictive.games.components.MovementComponent;
 import adictive.games.components.TransformComponent;
 import adictive.games.utils.Families;
@@ -16,15 +18,34 @@ public class FloorEffectSystem extends EntitySystem implements Reseteable {
     private final Array<Entity> players = new Array<>();
     private final ComponentMapper<TransformComponent> tm;
     private final ComponentMapper<MovementComponent> mm;
+    private SquareWorld world;
 
-    public FloorEffectSystem() {
+    private static final float ICE_FRICTION = 0f;
+    private static final float NORMAL_FRICTION = 0.2f;
+
+    public FloorEffectSystem(SquareWorld world) {
+        this.world = world;
         tm = ComponentMapper.getFor(TransformComponent.class);
         mm = ComponentMapper.getFor(MovementComponent.class);
     }
 
     @Override
     public void update(float deltaTime) {
+        for (Entity player : players) {
+            MovementComponent mc = mm.get(player);
+            TransformComponent tc = tm.get(player);
 
+            final int x = (int) (tc.pos.x + tc.size.x / 2);
+            final int y = (int) (tc.pos.y + tc.size.y / 2);
+
+            Entity iceFloor = world.tiledMap.getEntity(x, y, TiledMap.ICE);
+
+            if (iceFloor != null) {
+                mc.friction = ICE_FRICTION;
+            } else {
+                mc.friction = NORMAL_FRICTION;
+            }
+        }
     }
 
     @Override

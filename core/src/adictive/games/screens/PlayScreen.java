@@ -17,6 +17,7 @@ import adictive.games.systems.CollisionSystem;
 import adictive.games.systems.DebugSystem;
 import adictive.games.systems.DesignerSystem;
 import adictive.games.systems.EnemySystem;
+import adictive.games.systems.FloorEffectSystem;
 import adictive.games.systems.FollowCameraSystem;
 import adictive.games.systems.LightSystem;
 import adictive.games.systems.MovementSystem;
@@ -66,6 +67,7 @@ public class PlayScreen extends ScreenAdapter implements Reseteable {
         engine.addSystem(new PlayerInputSystem());
         engine.addSystem(new EnemySystem());
         engine.addSystem(new BlackHoleSystem());
+        engine.addSystem(new FloorEffectSystem(world));
         engine.addSystem(new MovementSystem());
         engine.addSystem(new PlayerEffectsSystem());
         engine.addSystem(new CollisionSystem(world, this));
@@ -118,6 +120,7 @@ public class PlayScreen extends ScreenAdapter implements Reseteable {
         engine.getSystem(EnemySystem.class).setProcessing(!pause);
         engine.getSystem(LightSystem.class).setProcessing(!pause);
         engine.getSystem(BlackHoleSystem.class).setProcessing(!pause);
+        engine.getSystem(FloorEffectSystem.class).setProcessing(!pause);
     }
 
     private DebugSystem getDebugSystem() {

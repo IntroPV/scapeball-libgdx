@@ -19,6 +19,7 @@ import adictive.games.components.BlackHoleComponent;
 import adictive.games.components.BoundsComponent;
 import adictive.games.components.CoinComponent;
 import adictive.games.components.EnemyComponent;
+import adictive.games.components.IceFloorComponent;
 import adictive.games.components.PlayerComponent;
 import adictive.games.components.SpikeComponent;
 import adictive.games.components.TextureComponent;
@@ -68,6 +69,7 @@ public class DesignerSystem extends EntitySystem implements Reseteable {
                 new WinBrush(0,0),
                 new EnemyBrush(0,0),
                 new CoinBrush(0,0),
+                new IceFloorBrush(0, 0),
                 new SpikeBrush(0,0, 0f),
                 new SpikeBrush(0,0, 90f),
                 new SpikeBrush(0,0, 180f),
@@ -394,6 +396,23 @@ public class DesignerSystem extends EntitySystem implements Reseteable {
             if (world.tiledMap.getEntity(x, y, TiledMap.WIN) != null) return;
 
             WinComponent.addNew(getEngine(), x, y);
+        }
+    }
+
+    class IceFloorBrush extends Brush {
+
+        IceFloorBrush(int x, int y) {
+            super(IceFloorComponent.create(x, y));
+        }
+
+        @Override
+        public void paint() {
+            final int x = (int) cursor.x;
+            final int y = (int) cursor.y;
+
+            if (world.tiledMap.getEntity(x, y, TiledMap.ICE) != null) return;
+
+            IceFloorComponent.addNew(getEngine(), x, y);
         }
     }
 

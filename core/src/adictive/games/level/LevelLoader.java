@@ -1,7 +1,6 @@
 package adictive.games.level;
 
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
@@ -9,6 +8,7 @@ import adictive.games.SquareWorld;
 import adictive.games.components.BlackHoleComponent;
 import adictive.games.components.CoinComponent;
 import adictive.games.components.EnemyComponent;
+import adictive.games.components.IceFloorComponent;
 import adictive.games.components.PlayerComponent;
 import adictive.games.components.SpikeComponent;
 import adictive.games.components.WallComponent;
@@ -43,6 +43,9 @@ public class LevelLoader {
                     break;
                 case "Win":
                     parseWin(entity);
+                    break;
+                case "Ice":
+                    parseIce(entity);
                     break;
                 case "Coin":
                     parseCoin(entity);
@@ -84,6 +87,13 @@ public class LevelLoader {
 
     private void parseWin(String[] line) {
         WinComponent.addNew(
+                engine,
+                Float.parseFloat(line[1]), Float.parseFloat(line[2])
+        );
+    }
+
+    private void parseIce(String[] line) {
+        IceFloorComponent.addNew(
                 engine,
                 Float.parseFloat(line[1]), Float.parseFloat(line[2])
         );

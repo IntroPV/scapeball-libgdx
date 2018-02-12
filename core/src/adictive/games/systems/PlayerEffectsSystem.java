@@ -5,18 +5,17 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
-import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.utils.Array;
 
 import adictive.games.components.PlayerComponent;
 import adictive.games.components.TransformComponent;
+import adictive.games.utils.Families;
 
 /**
  * Created by arielalvarez on 2/4/18.
  */
 
 public class PlayerEffectsSystem extends EntitySystem implements Reseteable {
-    public static final Family FAMILY = Family.all(PlayerComponent.class).get();
     private final Array<Entity> players = new Array<>();
     private final ComponentMapper<PlayerComponent> playerComp = ComponentMapper.getFor(PlayerComponent.class);
     private final ComponentMapper<TransformComponent> tc = ComponentMapper.getFor(TransformComponent.class);
@@ -25,7 +24,7 @@ public class PlayerEffectsSystem extends EntitySystem implements Reseteable {
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
         engine.addEntityListener(
-                FAMILY,
+                Families.PLAYER,
                 new EntityListener() {
                     @Override
                     public void entityAdded(Entity entity) {

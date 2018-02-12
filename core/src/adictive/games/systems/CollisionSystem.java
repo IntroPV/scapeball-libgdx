@@ -5,41 +5,27 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
-import com.badlogic.ashley.core.Family;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import adictive.games.SquareWorld;
-import adictive.games.components.BlackHoleComponent;
+import adictive.games.TiledMap;
 import adictive.games.components.BoundsComponent;
-import adictive.games.components.CoinComponent;
 import adictive.games.components.EnemyComponent;
 import adictive.games.components.PlayerComponent;
-import adictive.games.components.SpikeComponent;
 import adictive.games.components.TransformComponent;
-import adictive.games.components.WallComponent;
-import adictive.games.components.WinComponent;
 import adictive.games.screens.PlayScreen;
+import adictive.games.utils.Families;
 
 public class CollisionSystem extends EntitySystem implements Reseteable {
 
-    public static final byte WALL  = 1;
-    public static final byte WIN   = 2;
-    public static final byte COIN  = 3;
-    public static final byte SPIKE = 4;
-    public static final byte HOLE  = 5;
-
-    private static final int MAX_ENTITIES_ON_TILE  = 8;
-
     private static final float PADDING = 0.01f;
-
-    private static final Family BOUNDS_FAMILY = Family.all(BoundsComponent.class, TransformComponent.class).get();
 
     private final ComponentMapper<TransformComponent> transformMapper = ComponentMapper.getFor(TransformComponent.class);
     private final ComponentMapper<BoundsComponent> boundsMapper = ComponentMapper.getFor(BoundsComponent.class);
 
-    public final Entity[][][] entityMap;
+    private final SquareWorld world;
     private PlayScreen screen;
     private final List<Entity> enemies = new ArrayList<>();
     private Entity player;
@@ -48,19 +34,12 @@ public class CollisionSystem extends EntitySystem implements Reseteable {
 
     public CollisionSystem(SquareWorld world, PlayScreen screen) {
         super();
-        this.entityMap = new Entity[world.getWidth()][world.getHeight()][MAX_ENTITIES_ON_TILE];
+        this.world = world;
         this.screen = screen;
     }
 
     @Override
     public void reset() {
-        for (int i = 0; i < entityMap.length;i++) {
-            for (int j = 0; j < entityMap[i].length;j++) {
-                for (int k = 0; k < MAX_ENTITIES_ON_TILE;k++) {
-                    entityMap[i][j][k] = null;
-                }
-            }
-        }
         enemies.clear();
         player = null;
         playerTr = null;
@@ -71,7 +50,7 @@ public class CollisionSystem extends EntitySystem implements Reseteable {
     public void update(float deltaTime) {
         checkWallCollisionAndRespond();
         checkEnemyCollision();
-        checkRectangleCollisionInsideCell(SPIKE);
+        checkRectangleCollisionInsideCell(TiledMap.SPIKE);
         checkBlackHoleCollision();
         checkWinBlockCollision();
         checkCoinCollision();
@@ -80,7 +59,7 @@ public class CollisionSystem extends EntitySystem implements Reseteable {
     private void checkBlackHoleCollision() {
         final int x = (int) (playerTr.pos.x + playerBc.bounds.x / 2);
         final int y = (int) (playerTr.pos.y + playerBc.bounds.y / 2);
-        final Entity hole = entityMap[x][y][HOLE];
+        final Entity hole = world.tiledMap.getEntity(x, y, TiledMap.HOLE);
         if (hole != null) {
             screen.killed();
         }
@@ -89,14 +68,15 @@ public class CollisionSystem extends EntitySystem implements Reseteable {
     private void checkCoinCollision() {
         final int x = (int) (playerTr.pos.x + playerBc.bounds.x / 2);
         final int y = (int) (playerTr.pos.y + playerBc.bounds.y / 2);
-        final Entity coin = entityMap[x][y][COIN];
+        final Entity coin = world.tiledMap.getEntity(x, y, TiledMap.COIN);
         if (coin != null && playerOverlaps(coin.getComponent(TransformComponent.class), coin.getComponent(BoundsComponent.class))) {
             getEngine().removeEntity(coin);
         }
     }
 
     private void checkWinBlockCollision() {
-        if (entityMap[(int) (playerTr.pos.x + playerBc.bounds.x / 2)][(int) (playerTr.pos.y + playerBc.bounds.y / 2)][WIN] != null) {
+        Entity winEntity = world.tiledMap.getEntity((int) (playerTr.pos.x + playerBc.bounds.x / 2), (int) (playerTr.pos.y + playerBc.bounds.y / 2), TiledMap.WIN);
+        if (winEntity != null) {
             screen.win();
         }
     }
@@ -121,7 +101,7 @@ public class CollisionSystem extends EntitySystem implements Reseteable {
     }
 
     private void checkPointAgainstRectangleInsideCellCollision(int x, int y, byte type) {
-        Entity spike = entityMap[x][y][type];
+        Entity spike = world.tiledMap.getEntity(x, y, type);
         if (spike != null && playerOverlaps(spike.getComponent(TransformComponent.class), spike.getComponent(BoundsComponent.class))) {
             screen.killed();
         }
@@ -164,7 +144,7 @@ public class CollisionSystem extends EntitySystem implements Reseteable {
         final int cellX = (int) (playerTr.pos.x + deltaX);
         final int cellY = (int) (playerTr.pos.y + deltaY);
 
-        if (entityMap[cellX][cellY][WALL] != null && (int) (playerTr.lastPos.x + deltaX) != cellX) {
+        if (world.tiledMap.getEntity(cellX, cellY, TiledMap.WALL) != null && (int) (playerTr.lastPos.x + deltaX) != cellX) {
             if (playerTr.lastPos.x < playerTr.pos.x) {
                 return cellX - playerBc.bounds.width - PADDING;
             } else if (playerTr.lastPos.x > playerTr.pos.x) {
@@ -178,7 +158,7 @@ public class CollisionSystem extends EntitySystem implements Reseteable {
         final int cellX = (int) (playerTr.pos.x + deltaX);
         final int cellY = (int) (playerTr.pos.y + deltaY);
 
-        if (entityMap[cellX][cellY][WALL] != null && (int) (playerTr.lastPos.y + deltaY) != cellY) {
+        if (world.tiledMap.getEntity(cellX, cellY, TiledMap.WALL) != null && (int) (playerTr.lastPos.y + deltaY) != cellY) {
             if (playerTr.lastPos.y < playerTr.pos.y) {
                 return cellY - playerBc.bounds.height - PADDING;
             } else if (playerTr.lastPos.y > playerTr.pos.y) {
@@ -191,7 +171,7 @@ public class CollisionSystem extends EntitySystem implements Reseteable {
     @Override
     public void addedToEngine(final Engine engine) {
         super.addedToEngine(engine);
-        engine.addEntityListener(BOUNDS_FAMILY, new EntityListener() {
+        engine.addEntityListener(Families.BOUNDS, new EntityListener() {
             @Override
             public void entityAdded(Entity entity) {
                 final TransformComponent tc = transformMapper.get(entity);
@@ -202,34 +182,13 @@ public class CollisionSystem extends EntitySystem implements Reseteable {
                     player = entity;
                     playerTr = tc;
                     playerBc = boundsMapper.get(player);
-                } else if (entity.getComponent(WallComponent.class) != null) {
-                    entityMap[(int) tc.pos.x][(int) tc.pos.y][WALL] = entity;
-                } else if (entity.getComponent(WinComponent.class) != null) {
-                    entityMap[(int) tc.pos.x][(int) tc.pos.y][WIN] = entity;
-                } else if (entity.getComponent(CoinComponent.class) != null) {
-                    entityMap[(int) tc.pos.x][(int) tc.pos.y][COIN] = entity;
-                } else if (entity.getComponent(SpikeComponent.class) != null) {
-                    entityMap[(int) tc.pos.x][(int) tc.pos.y][SPIKE] = entity;
-                } else if (entity.getComponent(BlackHoleComponent.class) != null) {
-                    entityMap[(int)(tc.pos.x + tc.size.x/2)][(int)(tc.pos.y + tc.size.y/2)][HOLE] = entity;
                 }
             }
 
             @Override
             public void entityRemoved(Entity entity) {
                 final TransformComponent tc = transformMapper.get(entity);
-
-                if (entity.getComponent(WallComponent.class) != null) {
-                    entityMap[(int) tc.pos.x][(int) tc.pos.y][WALL] = null;
-                } else if (entity.getComponent(WinComponent.class) != null) {
-                    entityMap[(int) tc.pos.x][(int) tc.pos.y][WIN] = null;
-                } else if (entity.getComponent(CoinComponent.class) != null) {
-                    entityMap[(int) tc.pos.x][(int) tc.pos.y][COIN] = null;
-                } else if (entity.getComponent(SpikeComponent.class) != null) {
-                    entityMap[(int) tc.pos.x][(int) tc.pos.y][SPIKE] = null;
-                } else if (entity.getComponent(BlackHoleComponent.class) != null) {
-                    entityMap[(int) tc.pos.x][(int) tc.pos.y][HOLE] = null;
-                } else if (entity.getComponent(EnemyComponent.class) != null) {
+                if (entity.getComponent(EnemyComponent.class) != null) {
                     enemies.remove(entity);
                 } else if (entity.getComponent(PlayerComponent.class) != null) {
                     player = null;

@@ -8,11 +8,13 @@ public class SquareWorld {
     final int height = 32;
 
     private OrthographicCamera camera;
+    public final TiledMap tiledMap = new TiledMap();
 
     public SquareWorld() {
         camera = new OrthographicCamera();
         camera.setToOrtho(false);
         new FillViewport(width, height, camera);
+        tiledMap.init(width, height);
     }
 
     public OrthographicCamera getCamera() {

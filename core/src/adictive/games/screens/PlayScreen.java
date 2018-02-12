@@ -24,6 +24,7 @@ import adictive.games.systems.PlayerEffectsSystem;
 import adictive.games.systems.PlayerInputSystem;
 import adictive.games.systems.RenderingSystem;
 import adictive.games.systems.Reseteable;
+import adictive.games.systems.TileUpdateSystem;
 import adictive.games.utils.GameData;
 
 public class PlayScreen extends ScreenAdapter implements Reseteable {
@@ -59,6 +60,7 @@ public class PlayScreen extends ScreenAdapter implements Reseteable {
     }
 
     public void generateSystems() {
+        engine.addSystem(new TileUpdateSystem(world));
         engine.addSystem(new FollowCameraSystem());
 
         engine.addSystem(new PlayerInputSystem());

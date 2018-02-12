@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 import adictive.games.SquareWorld;
+import adictive.games.TiledMap;
 import adictive.games.components.BlackHoleComponent;
 import adictive.games.components.BoundsComponent;
 import adictive.games.components.CoinComponent;
@@ -288,7 +289,7 @@ public class DesignerSystem extends EntitySystem implements Reseteable {
             final float dstX = cursor.x - CoinComponent.WIDTH/2;
             final float dstY = cursor.y - CoinComponent.WIDTH/2;
 
-            if (getEngine().getSystem(CollisionSystem.class).entityMap[(int)dstX][(int)dstY][CollisionSystem.COIN] != null) return;
+            if (world.tiledMap.getEntity((int) dstX, (int) dstY, TiledMap.COIN) != null) return;
 
             CoinComponent.addNew(getEngine(), dstX, dstY);
         }
@@ -373,7 +374,7 @@ public class DesignerSystem extends EntitySystem implements Reseteable {
             final int x = (int)cursor.x;
             final int y = (int)cursor.y;
 
-            if (getEngine().getSystem(CollisionSystem.class).entityMap[x][y][CollisionSystem.WALL] != null) return;
+            if (world.tiledMap.getEntity(x, y, TiledMap.WALL) != null) return;
 
             WallComponent.addNewWall(getEngine(), x, y, flag);
         }
@@ -390,7 +391,7 @@ public class DesignerSystem extends EntitySystem implements Reseteable {
             final int x = (int)cursor.x;
             final int y = (int)cursor.y;
 
-            if (getEngine().getSystem(CollisionSystem.class).entityMap[x][y][CollisionSystem.WIN] != null) return;
+            if (world.tiledMap.getEntity(x, y, TiledMap.WIN) != null) return;
 
             WinComponent.addNew(getEngine(), x, y);
         }
@@ -421,7 +422,7 @@ public class DesignerSystem extends EntitySystem implements Reseteable {
             final int x = (int)cursor.x;
             final int y = (int)cursor.y;
 
-            if (getEngine().getSystem(CollisionSystem.class).entityMap[x][y][CollisionSystem.SPIKE] != null) return;
+            if (world.tiledMap.getEntity(x, y, TiledMap.SPIKE) != null) return;
 
             SpikeComponent.addNew(getEngine(), x, y, rotation);
         }
@@ -439,7 +440,8 @@ public class DesignerSystem extends EntitySystem implements Reseteable {
         public void paint() {
             final float x = ((int)cursor.x - BlackHoleComponent.SIDE/2) + 0.5f;
             final float y = ((int)cursor.y - BlackHoleComponent.SIDE/2) + 0.5f;
-            if (getEngine().getSystem(CollisionSystem.class).entityMap[(int)x][(int)y][CollisionSystem.HOLE] != null) return;
+
+            if (world.tiledMap.getEntity((int) x, (int) y, TiledMap.HOLE) != null) return;
 
             BlackHoleComponent.addNew(getEngine(), x, y, attraction);
         }

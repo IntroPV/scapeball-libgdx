@@ -45,6 +45,14 @@ public class MovementSystem extends IteratingSystem implements Reseteable {
         if (velLen > 0) {
             transformComponent.rotation = movementComponent.velocity.angle();
         }
+
+        if (movementComponent.velocity.len() > movementComponent.friction) {
+            //apply friction
+            tmp.set(movementComponent.velocity).nor().scl(-movementComponent.friction);
+            movementComponent.velocity.add(tmp);
+        } else {
+            movementComponent.velocity.set(0, 0);
+        }
     }
 
     @Override

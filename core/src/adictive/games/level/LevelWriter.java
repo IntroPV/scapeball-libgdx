@@ -11,7 +11,7 @@ import java.io.UnsupportedEncodingException;
 import adictive.games.components.BlackHoleComponent;
 import adictive.games.components.CoinComponent;
 import adictive.games.components.EnemyComponent;
-import adictive.games.components.IceFloorComponent;
+import adictive.games.components.FloorEffectComponent;
 import adictive.games.components.PlayerComponent;
 import adictive.games.components.SpikeComponent;
 import adictive.games.components.TransformComponent;
@@ -54,7 +54,7 @@ public class LevelWriter {
             writer.println(holeToCSV(e));
         } else if (e.getComponent(SpikeComponent.class) != null) {
             writer.println(spikeToCSV(e));
-        } else if (e.getComponent(IceFloorComponent.class) != null) {
+        } else if (e.getComponent(FloorEffectComponent.class) != null) {
             writer.println(iceBlockToCSV(e));
         }
     }
@@ -76,7 +76,7 @@ public class LevelWriter {
 
     private String iceBlockToCSV(Entity e) {
         TransformComponent tc = e.getComponent(TransformComponent.class);
-        return csv("Ice", tc.pos.x, tc.pos.y);
+        return csv("Floor", tc.pos.x, tc.pos.y, e.flags);
     }
 
     public String playerToCSV(Entity e) {

@@ -4,7 +4,7 @@ import com.badlogic.ashley.core.Entity;
 
 import adictive.games.components.BlackHoleComponent;
 import adictive.games.components.CoinComponent;
-import adictive.games.components.IceFloorComponent;
+import adictive.games.components.FloorEffectComponent;
 import adictive.games.components.SpikeComponent;
 import adictive.games.components.WallComponent;
 import adictive.games.components.WinComponent;
@@ -21,7 +21,7 @@ public class TiledMap implements Reseteable {
     public static final byte COIN = 3;
     public static final byte SPIKE = 4;
     public static final byte HOLE = 5;
-    public static final byte ICE = 6;
+    public static final byte FLOOR = 6;
 
     static {
         REGISTRY[WALL] = WallComponent.class;
@@ -29,7 +29,7 @@ public class TiledMap implements Reseteable {
         REGISTRY[COIN] = CoinComponent.class;
         REGISTRY[SPIKE] = SpikeComponent.class;
         REGISTRY[HOLE] = BlackHoleComponent.class;
-        REGISTRY[ICE] = IceFloorComponent.class;
+        REGISTRY[FLOOR] = FloorEffectComponent.class;
     }
 
     public void init(int width, int height) {

@@ -32,18 +32,13 @@ public class MovementSystem extends IteratingSystem implements Reseteable {
 
         movementComponent.velocity.add(movementComponent.accel);
 
+
         tmp.set(movementComponent.velocity);
 
         float velLen = movementComponent.velocity.len();
         if (velLen > PlayerComponent.MAX_VELOCITY) {
             tmp.nor().scl(PlayerComponent.MAX_VELOCITY);
             movementComponent.velocity.nor().scl(PlayerComponent.MAX_VELOCITY);
-        }
-        tmp.scl(deltaTime);
-        transformComponent.pos.add(tmp.x, tmp.y, 0.0f);
-
-        if (velLen > 0) {
-            transformComponent.rotation = movementComponent.velocity.angle();
         }
 
         if (movementComponent.velocity.len() > movementComponent.friction) {
@@ -53,6 +48,16 @@ public class MovementSystem extends IteratingSystem implements Reseteable {
         } else {
             movementComponent.velocity.set(0, 0);
         }
+
+        tmp.set(movementComponent.velocity).scl(deltaTime);
+
+        transformComponent.pos.add(tmp.x, tmp.y, 0.0f);
+
+        if (movementComponent.velocity.len() > 0) {
+            transformComponent.rotation = movementComponent.velocity.angle();
+        }
+
+
     }
 
     @Override

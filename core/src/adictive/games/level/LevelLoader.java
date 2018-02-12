@@ -8,7 +8,7 @@ import adictive.games.SquareWorld;
 import adictive.games.components.BlackHoleComponent;
 import adictive.games.components.CoinComponent;
 import adictive.games.components.EnemyComponent;
-import adictive.games.components.IceFloorComponent;
+import adictive.games.components.FloorEffectComponent;
 import adictive.games.components.PlayerComponent;
 import adictive.games.components.SpikeComponent;
 import adictive.games.components.WallComponent;
@@ -44,8 +44,8 @@ public class LevelLoader {
                 case "Win":
                     parseWin(entity);
                     break;
-                case "Ice":
-                    parseIce(entity);
+                case "Floor":
+                    parseFloor(entity);
                     break;
                 case "Coin":
                     parseCoin(entity);
@@ -92,10 +92,10 @@ public class LevelLoader {
         );
     }
 
-    private void parseIce(String[] line) {
-        IceFloorComponent.addNew(
+    private void parseFloor(String[] line) {
+        FloorEffectComponent.addNew(
                 engine,
-                Float.parseFloat(line[1]), Float.parseFloat(line[2])
+                Float.parseFloat(line[1]), Float.parseFloat(line[2]), Byte.parseByte(line[3])
         );
     }
 

@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array;
 
 import adictive.games.SquareWorld;
 import adictive.games.TiledMap;
+import adictive.games.components.FloorEffectComponent;
 import adictive.games.components.MovementComponent;
 import adictive.games.components.TransformComponent;
 import adictive.games.utils.Families;
@@ -21,7 +22,9 @@ public class FloorEffectSystem extends EntitySystem implements Reseteable {
     private SquareWorld world;
 
     private static final float ICE_FRICTION = 0f;
+    private static final float DIRT_FRICTION = 1.8f;
     private static final float NORMAL_FRICTION = 0.2f;
+    private static final float ACCELERATOR_FRICTION = -11f;
 
     public FloorEffectSystem(SquareWorld world) {
         this.world = world;
@@ -38,12 +41,16 @@ public class FloorEffectSystem extends EntitySystem implements Reseteable {
             final int x = (int) (tc.pos.x + tc.size.x / 2);
             final int y = (int) (tc.pos.y + tc.size.y / 2);
 
-            Entity iceFloor = world.tiledMap.getEntity(x, y, TiledMap.ICE);
+            Entity floor = world.tiledMap.getEntity(x, y, TiledMap.FLOOR);
 
-            if (iceFloor != null) {
-                mc.friction = ICE_FRICTION;
-            } else {
+            if (floor == null) {
                 mc.friction = NORMAL_FRICTION;
+            } else if (floor.flags == FloorEffectComponent.ICE) {
+                mc.friction = ICE_FRICTION;
+            } else if (floor.flags == FloorEffectComponent.DIRT) {
+                mc.friction = DIRT_FRICTION;
+            } else if (floor.flags == FloorEffectComponent.ACCELERATOR) {
+                mc.friction = ACCELERATOR_FRICTION;
             }
         }
     }

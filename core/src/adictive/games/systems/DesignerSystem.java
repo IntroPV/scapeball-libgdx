@@ -19,7 +19,7 @@ import adictive.games.components.BlackHoleComponent;
 import adictive.games.components.BoundsComponent;
 import adictive.games.components.CoinComponent;
 import adictive.games.components.EnemyComponent;
-import adictive.games.components.IceFloorComponent;
+import adictive.games.components.FloorEffectComponent;
 import adictive.games.components.PlayerComponent;
 import adictive.games.components.SpikeComponent;
 import adictive.games.components.TextureComponent;
@@ -69,7 +69,9 @@ public class DesignerSystem extends EntitySystem implements Reseteable {
                 new WinBrush(0,0),
                 new EnemyBrush(0,0),
                 new CoinBrush(0,0),
-                new IceFloorBrush(0, 0),
+                new FloorBrush(0, 0, FloorEffectComponent.ICE),
+                new FloorBrush(0, 0, FloorEffectComponent.DIRT),
+                new FloorBrush(0, 0, FloorEffectComponent.ACCELERATOR),
                 new SpikeBrush(0,0, 0f),
                 new SpikeBrush(0,0, 90f),
                 new SpikeBrush(0,0, 180f),
@@ -399,10 +401,13 @@ public class DesignerSystem extends EntitySystem implements Reseteable {
         }
     }
 
-    class IceFloorBrush extends Brush {
+    class FloorBrush extends Brush {
 
-        IceFloorBrush(int x, int y) {
-            super(IceFloorComponent.create(x, y));
+        private byte type;
+
+        FloorBrush(int x, int y, byte type) {
+            super(FloorEffectComponent.create(x, y, type));
+            this.type = type;
         }
 
         @Override
@@ -410,9 +415,9 @@ public class DesignerSystem extends EntitySystem implements Reseteable {
             final int x = (int) cursor.x;
             final int y = (int) cursor.y;
 
-            if (world.tiledMap.getEntity(x, y, TiledMap.ICE) != null) return;
+            if (world.tiledMap.getEntity(x, y, TiledMap.FLOOR) != null) return;
 
-            IceFloorComponent.addNew(getEngine(), x, y);
+            FloorEffectComponent.addNew(getEngine(), x, y, type);
         }
     }
 

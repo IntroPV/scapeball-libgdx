@@ -124,10 +124,10 @@ class PlayScreen(val superCubito: MainGame) : ScreenAdapter(), Reseteable {
     companion object {
         private val COINS_FAMILY = Family.all(CoinComponent::class.java!!).get()
 
-        val RUNNING = 1
-        val KILLED = 2
-        val WIN = 3
-        val DEBUG_CHANGE_LEVEL = 4
+        const val RUNNING = 1
+        const val KILLED = 2
+        const val WIN = 3
+        const val DEBUG_CHANGE_LEVEL = 4
     }
 
 }
